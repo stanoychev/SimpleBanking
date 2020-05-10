@@ -105,6 +105,10 @@
     <Compile Include="Migrations\202005102330050_rename.designer.cs">
       <DependentUpon>202005102330050_rename.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005102347089_relationsupdate1.cs" />
+    <Compile Include="Migrations\202005102347089_relationsupdate1.designer.cs">
+      <DependentUpon>202005102347089_relationsupdate1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -143,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005102330050_rename.resx">
       <DependentUpon>202005102330050_rename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005102347089_relationsupdate1.resx">
+      <DependentUpon>202005102347089_relationsupdate1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

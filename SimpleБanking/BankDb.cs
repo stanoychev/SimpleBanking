@@ -40,10 +40,15 @@ namespace SimpleBanking
         public int AccountId { get; set; }
         public double Balance { get; set; }
         public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
+
+        //[ForeignKey("Customer")]
+        //public int CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 
     public class Customer
     {
+        [ForeignKey("Account")]
         public int CustomerId { get; set; }
 
         [Required]
@@ -57,6 +62,8 @@ namespace SimpleBanking
         [Column(TypeName = "Binary")]
         public byte[] Pin { get; set; }
 
-        //public Account Account { get; set; }
+        //[ForeignKey("Account")]
+        //public int AccountId { get; set; }
+        public Account Account { get; set; }
     }
 }
