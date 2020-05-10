@@ -28,7 +28,7 @@ namespace SimpleBanking
 
     public class Transaction
     {
-        public int Id { get; set; }
+        public int TransactionId { get; set; }
         public double Amount { get; set; }
         public DateTime? TimeOfExecution { get; set; }
         //public virtual Customer From { get; set; }
@@ -37,14 +37,14 @@ namespace SimpleBanking
 
     public class Account
     {
-        public int Id { get; set; }
+        public int AccountId { get; set; }
         public double Balance { get; set; }
         public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
     }
 
     public class Customer
     {
-        public int Id { get; set; }
+        public int CustomerId { get; set; }
 
         [Required]
         [Index(IsUnique = true)]

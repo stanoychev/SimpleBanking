@@ -97,6 +97,14 @@
     <Compile Include="Migrations\202005102226200_relationsupdate.designer.cs">
       <DependentUpon>202005102226200_relationsupdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005102329077_drop.cs" />
+    <Compile Include="Migrations\202005102329077_drop.designer.cs">
+      <DependentUpon>202005102329077_drop.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005102330050_rename.cs" />
+    <Compile Include="Migrations\202005102330050_rename.designer.cs">
+      <DependentUpon>202005102330050_rename.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -129,6 +137,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005102226200_relationsupdate.resx">
       <DependentUpon>202005102226200_relationsupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005102329077_drop.resx">
+      <DependentUpon>202005102329077_drop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005102330050_rename.resx">
+      <DependentUpon>202005102330050_rename.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
