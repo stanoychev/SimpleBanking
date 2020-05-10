@@ -19,16 +19,16 @@ namespace SimpleBanking
             "[deposit] [amount]\n" +
             "[transfer] [amount] to [user]\n" +
             "[history]\n" +
-            "[q] (to quit)\n";
+            "[q] (to quit)";
 
         const string invalidCommand = 
             "Invalid input.\n" +
-            "Type [h] for list of available commands or [q] to quit.\n";
+            "Type [h] for list of available commands or [q] to quit.";
 
         const string wellcome =
             "Bank started.\n" +
             "Please type command.\n" +
-            "Type [h] for list of available commands or [q] to quit.\n";
+            "Type [h] for list of available commands or [q] to quit.";
         #endregion
         readonly ICommandParser commandParser;
         readonly IBankManager bankManager;
@@ -54,12 +54,12 @@ namespace SimpleBanking
                 else if (command.CommandId == Command.Help)
                 {
                     Console.WriteLine(help);
-                    break;
+                    continue;
                 }
-                else if (command.CommandId == Command.Help)
+                else if (command.CommandId == Command.InvalidCommand)
                 {
                     Console.WriteLine(invalidCommand);
-                    break;
+                    continue;
                 }
 
                 bankManager.ExecuteCommand(command);
