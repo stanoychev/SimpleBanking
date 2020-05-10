@@ -39,7 +39,7 @@ namespace SimpleBanking
     {
         public int Id { get; set; }
         public double Balance { get; set; }
-        //public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
+        public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
     }
 
     public class Customer
@@ -57,6 +57,6 @@ namespace SimpleBanking
         [Column(TypeName = "Binary")]
         public byte[] Pin { get; set; }
 
-        public Account Account { get; set; }
+        //public Account Account { get; set; }
     }
 }
