@@ -89,6 +89,10 @@
     <Compile Include="Migrations\202005102158425_accountsAndTransactions.designer.cs">
       <DependentUpon>202005102158425_accountsAndTransactions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005102203510_customerToAccount.cs" />
+    <Compile Include="Migrations\202005102203510_customerToAccount.designer.cs">
+      <DependentUpon>202005102203510_customerToAccount.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005102158425_accountsAndTransactions.resx">
       <DependentUpon>202005102158425_accountsAndTransactions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005102203510_customerToAccount.resx">
+      <DependentUpon>202005102203510_customerToAccount.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
