@@ -16,10 +16,7 @@ namespace SimpleBanking
 
     public class BankDb : DbContext, IBankDb
     {
-        public BankDb() : base("BankDb")
-        {
-
-        }
+        public BankDb() : base("BankDb") { }
 
         public IDbSet<Transaction> Transactions { get; set; }
         public IDbSet<Account> Accounts { get; set; }
@@ -37,6 +34,7 @@ namespace SimpleBanking
 
     public class Account
     {
+        //[ForeignKey("Customer")]
         public int AccountId { get; set; }
         public double Balance { get; set; }
         public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
@@ -60,6 +58,6 @@ namespace SimpleBanking
         [Column(TypeName = "Binary")]
         public byte[] Pin { get; set; }
 
-        public Account Account { get; set; }
+        public virtual Account Account { get; set; } //= new Account();
     }
 }

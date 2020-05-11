@@ -33,11 +33,5 @@ namespace SimpleBanking
         {
             throw new System.NotImplementedException();
         }
-
-        private Func<string, byte[]> getHash = (input) =>
-        {
-            using (SHA512 sha512Hash = SHA512.Create())
-                return sha512Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-        };
     }
 }
