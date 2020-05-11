@@ -34,7 +34,7 @@ namespace SimpleBanking
 
     public class Account
     {
-        //[ForeignKey("Customer")]
+        [ForeignKey("Customer")]
         public int AccountId { get; set; }
         public double Balance { get; set; }
         public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();

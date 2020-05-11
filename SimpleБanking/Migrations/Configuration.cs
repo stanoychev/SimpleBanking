@@ -30,37 +30,23 @@ namespace SimpleBanking.Migrations
 
         void Register(BankDb context, Tools tools, double amount, string name, string pin)
         {
-            //var customer = new Customer()
-            //{
-            //    User = tools.HashString(name),
-            //    Pin = tools.HashString(pin)
-            //};
+            var account = new Account()
+            {
+                Balance = amount,
+            };
 
-            //var account = new Account()
-            //{
-            //    Balance = amount,
-            //};
+            context.Accounts.Add(account);
+            context.SaveChanges();
 
-            //context.Accounts.Add(account);
-            ////context.SaveChanges();
+            var customer = new Customer()
+            {
+                User = tools.HashString(name),
+                Pin = tools.HashString(pin),
+                Account = context.Accounts.OrderByDescending(x => x.AccountId).First()
+            };
 
-            //customer.Account = context.Accounts.Last();
-            //context.Customers.Add(customer);
-
-            //context.SaveChanges();
-
-
-            //throw new System.Exception(account.AccountId.ToString());
-
-            //account.Customer = new Customer()
-            //{
-            //    User = tools.HashString(name),
-            //    Pin = tools.HashString(pin),
-            //    //Account = context.Accounts.Last()
-            //};
-
-            ////context.Customers.Add(customer);
-            //context.SaveChanges();
+            context.Customers.Add(customer);
+            context.SaveChanges();
         }
     }
 }
