@@ -11,7 +11,7 @@ namespace SimpleBanking
                 return sha512Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
         }
 
-        public bool AreEqual(byte[] first, byte[] second)
+        public bool CompareHashes(byte[] first, byte[] second)
         {
             var enumerator1 = first.GetEnumerator();
             var enumerator2 = second.GetEnumerator();

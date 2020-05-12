@@ -12,96 +12,88 @@ namespace SimpleBanking
     public class BankManager : IBankManager
     {
         readonly IDbService dbService;
-        private string loggedUser;
-        private int? accountId;
+        private (string user, string pass) credentials;
 
         public BankManager(IDbService dbService_) => dbService = dbService_;
 
         public string Result { get; private set; }
-        private bool IsLoggedIn => loggedUser != null;
-        
+        private bool IsLoggedIn => credentials.user != null;
+
         public void ExecuteCommand(IBankCommand command)
         {
             switch (command.CommandId)
             {
                 case Command.Login:
-                    Result = TryLogIn(command.InputParameters);
+                    Result = LogIn(command.InputParameters);
                     break;
                 case Command.Logout:
-                    Result = TryLogout();
+                    Result = Logout();
                     break;
                 case Command.GetBalance:
-                    Result = TryGetBalance();
+                    Result = GetBalance();
                     break;
                 case Command.Withdraw:
-                    Result = TryWithdraw(command.InputParameters);
+                    Result = Withdraw(command.InputParameters);
                     break;
                 case Command.Deposit:
-                    Result = TryDeposit(command.InputParameters);
+                    Result = Deposit(command.InputParameters);
                     break;
                 case Command.Transfer:
-                    Result = TryTransfer(command.InputParameters);
+                    Result = Transfer(command.InputParameters);
                     break;
                 case Command.History:
-                    Result = TryGetHistory();
+                    Result = GetHistory();
                     break;
             }
         }
-        
-        private string TryLogIn(Dictionary<ArgumentType, string> inputParameters)
+
+        private string LogIn(Dictionary<ArgumentType, string> inputParameters)
         {
             if (IsLoggedIn)
-                return $"[{loggedUser}] is currently logged in. Log out first.";
+                return $"[{credentials}] is currently logged in. Log out first.";
             else
             {
-                var user = inputParameters[ArgumentType.User];
-                var pin = inputParameters[ArgumentType.Pin];
+                var enteredCredentials = (inputParameters[ArgumentType.User], inputParameters[ArgumentType.Pin]);
 
-                accountId = dbService.GetAccount(user, pin);
+                var isValid = dbService.CustomerExists(enteredCredentials);
 
-                if (accountId == null)
-                    return "User or pin incorrect.";
-                else
+                if (isValid)
                 {
-                    loggedUser = user;
-                    return $"[{loggedUser}] successuly logged in.";
+                    credentials = enteredCredentials;
+                    return $"[{credentials.user}] successuly logged in.";
                 }
+                else
+                    return "User or pin incorrect.";
             }
         }
-    
-        private string TryLogout()
+
+        private string Logout()
         {
             if (IsLoggedIn)
             {
-                loggedUser = null;
-                accountId = null;
+                credentials = default;
                 return "User successfully logged out.";
             }
             else
                 return "User already logged out.";
         }
 
-        private string TryGetBalance()
-        {
-            if (IsLoggedIn)
-                return string.Format("{0:0.00}", dbService.GetBalance(accountId.Value));
-            else
-                return "Not logged in.";
-        }
+        private string GetBalance()
+            => IsLoggedIn ? string.Format("{0:0.00}", dbService.GetBalance(credentials) ?? 0d) : "Not logged in.";
 
-        private string TryWithdraw(Dictionary<ArgumentType, string> inputParameters)
+        private string Withdraw(Dictionary<ArgumentType, string> inputParameters)
         {
             if (IsLoggedIn)
             {
                 var amount = double.Parse(inputParameters[ArgumentType.Amount]);
-                var balance = dbService.GetBalance(accountId.Value);
-                if (amount <= 0)
+                var balance = dbService.GetBalance(credentials);
+
+                if (!balance.HasValue)
+                    return $"[System error] User [{credentials.user}] has changed credentials. Logout and login again.";
+                else if (amount <= 0)
                     return "Withdraw amount must be positive value.";
                 else if (balance > amount)
-                {
-                    dbService.Withdraw(accountId.Value, amount);
-                    return string.Format("Withdrawn {0:0.00}", amount);
-                }
+                    return dbService.Withdraw(credentials, amount) ? string.Format("Withdrawn {0:0.00}", amount) : "[System error.] Witdraw failed.";
                 else
                     return "Insufficient funds.";
             }
@@ -109,34 +101,44 @@ namespace SimpleBanking
                 return "Not logged in.";
         }
 
-        private string TryDeposit(Dictionary<ArgumentType, string> inputParameters)
+        private string Deposit(Dictionary<ArgumentType, string> inputParameters)
         {
             if (IsLoggedIn)
             {
-                throw new NotImplementedException();
+                var amount = double.Parse(inputParameters[ArgumentType.Amount]);
+
+                return amount <= 0 ? "Deposit amount must be positive value." : dbService.Deposit(credentials, amount) ? "Deposit successful." : "[System error.] Deposit failed.";
             }
             else
                 return "Not logged in.";
         }
 
-        private string TryTransfer(Dictionary<ArgumentType, string> inputParameters)
+        private string Transfer(Dictionary<ArgumentType, string> inputParameters)
         {
             if (IsLoggedIn)
             {
-                throw new NotImplementedException();
+                var amount = double.Parse(inputParameters[ArgumentType.Amount]);
+                var recipient = inputParameters[ArgumentType.User];
+                var userExist = dbService.VerifyUserExist(recipient);
+                var balance = dbService.GetBalance(credentials);
+
+                if (!balance.HasValue)
+                    return $"[System error] User [{credentials.user}] has changed credentials. Logout and login again.";
+                else if (amount <= 0)
+                    return "Deposit amount must be positive value.";
+                else if (!userExist)
+                    return $"Recipient [{recipient}] not found.";
+                else if (string.Equals(recipient, credentials.user))
+                    return $"Can not transfer to self.";
+                else if (balance < amount)
+                    return $"[{credentials.user}] has insufficient funds.";
+                else
+                    return dbService.Transfter(credentials, amount, recipient) ? "Transfter successful." : "[System error.] Transfter failed.";
             }
             else
                 return "Not logged in.";
         }
 
-        private string TryGetHistory()
-        {
-            if (IsLoggedIn)
-            {
-                throw new NotImplementedException();
-            }
-            else
-                return "Not logged in.";
-        }
+        private string GetHistory() => IsLoggedIn ? dbService.GetFormatedHistory(credentials) : "Not logged in.";
     }
 }

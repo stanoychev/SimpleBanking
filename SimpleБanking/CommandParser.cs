@@ -33,10 +33,14 @@ namespace SimpleBanking
 
         //assumes only latin upper and lower case letters
         private bool UserIsValid(string user) => Regex.IsMatch(user, @"^[a-z]+$", RegexOptions.IgnoreCase);
-        //assumes only tree digits
-        private bool PinIsValid(string pin) => Regex.IsMatch(pin, @"^[0-9]+$") && pin.Length == 3;
+        //assumes only digits
+        private bool PinIsValid(string pin) => Regex.IsMatch(pin, @"^[0-9]+$");
         //amount <= 0 will be validated in the command itself
-        private bool AmountIsValid(string amount) => double.TryParse(amount, out var a) && amount.Split(new char[] { ',', '.'})[1].Length == 2;
+        private bool AmountIsValid(string amount) => 
+            double.TryParse(amount, out var a) && 
+            (amount.Contains(".") || amount.Contains(",")) ?
+                amount.Split(new char[] { ',', '.'})[1].Length <= 2 :
+                true;
 
         private IBankCommand ValidateLogin(string[] commandParameters)
         {
@@ -100,7 +104,7 @@ namespace SimpleBanking
 
             var commandArguments = new Dictionary<ArgumentType, string>()
             {
-                { ArgumentType.User, commandParameters[1] }
+                { ArgumentType.Amount, commandParameters[1] }
             };
 
             return new BankCommand(Command.Deposit, commandArguments);

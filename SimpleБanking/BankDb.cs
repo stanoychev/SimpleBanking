@@ -58,6 +58,10 @@ namespace SimpleBanking
         [Column(TypeName = "Binary")]
         public byte[] Pin { get; set; }
 
-        public virtual Account Account { get; set; } //= new Account();
+        [Required]
+        [MaxLength(64)]
+        public string Name { get; set; }
+
+        public virtual Account Account { get; set; }
     }
 }

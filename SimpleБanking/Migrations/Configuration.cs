@@ -14,35 +14,28 @@ namespace SimpleBanking.Migrations
 
         protected override void Seed(BankDb context)
         {
-            foreach (var account in context.Accounts)
-                context.Accounts.Remove(account);
-
-            foreach (var customer in context.Customers)
-                context.Customers.Remove(customer);
+            if (context.Accounts.Any())
+                return;
 
             var tools = new Tools();
 
-            Register(context, tools, 100000, "bank", "123");
-            Register(context, tools, 1000, "pesho", "111");
-            Register(context, tools, 2000, "misho", "222");
-            Register(context, tools, 3000, "gosho", "333");
+            Register(context, tools, 100000, "bank", "123", "Bank Manager");
+            Register(context, tools, 1000, "pesho", "111", "Petur Petkov");
+            Register(context, tools, 2000, "misho", "222", "Mihail Mihailov");
+            Register(context, tools, 3000, "gosho", "333", "Georgi Georgiev");
         }
 
-        void Register(BankDb context, Tools tools, double amount, string name, string pin)
+        void Register(BankDb context, Tools tools, double amount, string user, string pin, string name)
         {
-            var account = new Account()
-            {
-                Balance = amount,
-            };
-
-            context.Accounts.Add(account);
-            context.SaveChanges();
-
             var customer = new Customer()
             {
-                User = tools.HashString(name),
+                User = tools.HashString(user),
                 Pin = tools.HashString(pin),
-                Account = context.Accounts.OrderByDescending(x => x.AccountId).First()
+                Name = name,
+                Account = new Account()
+                {
+                    Balance = amount,
+                }
             };
 
             context.Customers.Add(customer);
