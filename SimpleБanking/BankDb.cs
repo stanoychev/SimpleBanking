@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.IO;
 
 namespace SimpleBanking
 {
@@ -16,7 +17,9 @@ namespace SimpleBanking
 
     public class BankDb : DbContext, IBankDb
     {
-        public BankDb() : base("BankDb") { }
+        public BankDb() => new BankDb(Directory.GetCurrentDirectory());
+
+        public BankDb(string dbPath) : base($"Server=.\\SQLEXPRESS;AttachDbFilename={dbPath}BankDb.mdf;Initial Catalog=BankDb;Integrated Security=True") { }
 
         public IDbSet<Transaction> Transactions { get; set; }
         public IDbSet<Account> Accounts { get; set; }
