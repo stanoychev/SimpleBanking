@@ -7,20 +7,8 @@ namespace SimpleBanking
     {
         public string HashString(string input)
         {
-            using (SHA512 sha512Hash = SHA512.Create())
-                return string.Join("-", sha512Hash.ComputeHash(Encoding.UTF8.GetBytes(input)));
-        }
-
-        public bool CompareHashes(byte[] first, byte[] second)
-        {
-            var enumerator1 = first.GetEnumerator();
-            var enumerator2 = second.GetEnumerator();
-            
-            while (enumerator1.MoveNext() && enumerator2.MoveNext())
-                if ((byte)enumerator1.Current != (byte)enumerator2.Current)
-                    return false;
-
-            return true;
+            using (SHA1 sha = SHA1.Create())
+                return string.Join(string.Empty, sha.ComputeHash(Encoding.UTF8.GetBytes(input)));
         }
     }
 }

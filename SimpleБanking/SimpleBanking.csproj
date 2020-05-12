@@ -137,6 +137,22 @@
     <Compile Include="Migrations\202005122145518_updateuser.designer.cs">
       <DependentUpon>202005122145518_updateuser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005122234268_updateuser1.cs" />
+    <Compile Include="Migrations\202005122234268_updateuser1.designer.cs">
+      <DependentUpon>202005122234268_updateuser1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005122239257_drop3.cs" />
+    <Compile Include="Migrations\202005122239257_drop3.designer.cs">
+      <DependentUpon>202005122239257_drop3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005122240444_updateuser2.cs" />
+    <Compile Include="Migrations\202005122240444_updateuser2.designer.cs">
+      <DependentUpon>202005122240444_updateuser2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005122242270_updateuser3.cs" />
+    <Compile Include="Migrations\202005122242270_updateuser3.designer.cs">
+      <DependentUpon>202005122242270_updateuser3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -200,6 +216,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005122145518_updateuser.resx">
       <DependentUpon>202005122145518_updateuser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122234268_updateuser1.resx">
+      <DependentUpon>202005122234268_updateuser1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122239257_drop3.resx">
+      <DependentUpon>202005122239257_drop3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122240444_updateuser2.resx">
+      <DependentUpon>202005122240444_updateuser2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122242270_updateuser3.resx">
+      <DependentUpon>202005122242270_updateuser3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

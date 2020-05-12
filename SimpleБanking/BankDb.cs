@@ -40,14 +40,14 @@ namespace SimpleBanking
 
         [Required]
         [Index(IsUnique = true)]
-        [MaxLength(256)]
+        [MaxLength(100)]
         public string User { get; set; }
 
         [Required]
         public string Pin { get; set; }
 
         [Required]
-        [MaxLength(256)]
+        [MaxLength(100)]
         public string Name { get; set; }
 
         public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
