@@ -9,9 +9,8 @@ namespace SimpleBanking
 {
     public interface IBankDb
     {
-        IDbSet<Transaction> Transactions { get; set; }
-        IDbSet<Account> Accounts { get; set; }
-        IDbSet<Customer> Customers { get; set; }
+        //IDbSet<Transaction> Transactions { get; set; }
+        //IDbSet<Customer> Customers { get; set; }
         int SaveChanges();
     }
 
@@ -21,9 +20,8 @@ namespace SimpleBanking
 
         public BankDb(string dbPath) : base($"Server=.\\SQLEXPRESS;AttachDbFilename={dbPath}BankDb.mdf;Initial Catalog=BankDb;Integrated Security=True") { }
 
-        public IDbSet<Transaction> Transactions { get; set; }
-        public IDbSet<Account> Accounts { get; set; }
-        public IDbSet<Customer> Customers { get; set; }
+        //public IDbSet<Transaction> Transactions { get; set; }
+        //public IDbSet<Customer> Customers { get; set; }
     }
 
     public class Transaction
@@ -35,36 +33,23 @@ namespace SimpleBanking
         public virtual Customer To { get; set; }
     }
 
-    public class Account
-    {
-        [ForeignKey("Customer")]
-        public int AccountId { get; set; }
-        public double Balance { get; set; }
-        public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
-
-        public virtual Customer Customer { get; set; }
-    }
-
     public class Customer
     {
-        [ForeignKey("Account")]
+        [Key]
         public int CustomerId { get; set; }
 
         [Required]
         [Index(IsUnique = true)]
-        [MaxLength(64)]
-        [Column(TypeName = "Binary")]
-        public byte[] User { get; set; }
+        [StringLength(1024)]
+        public string User { get; set; }
 
         [Required]
-        [MaxLength(64)]
-        [Column(TypeName = "Binary")]
-        public byte[] Pin { get; set; }
+        public string Pin { get; set; }
 
         [Required]
         [MaxLength(64)]
         public string Name { get; set; }
 
-        public virtual Account Account { get; set; }
+        public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
     }
 }

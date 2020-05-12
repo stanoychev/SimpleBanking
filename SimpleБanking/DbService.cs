@@ -27,8 +27,6 @@ namespace SimpleBanking
             if (customer == null)
                 return false;
 
-            customer.Account.Balance += amount;
-
             AddTransaction(amount, null, customer);
 
             var numberOfSavedItems = bankDb.SaveChanges();
@@ -41,11 +39,13 @@ namespace SimpleBanking
             if (customer == null)
                 return null;
 
-            return customer.Account.Balance;
+            throw new Exception();
+            return default;// customer.Transactions.Where(x => ).Balance;
         }
 
         public string GetFormatedHistory((string user, string pin) credentials)
         {
+            throw new Exception();
             return default;
         }
 
@@ -55,14 +55,9 @@ namespace SimpleBanking
             if (customer == null)
                 return false;
 
-            var hashedUser = tools.HashString(user);
-            var recipient = bankDb.Customers.ToList()//I am aware this is bad, but at least is secure and for small simple application should be relatively fine
-                .FirstOrDefault(x => tools.CompareHashes(x.User, hashedUser));
+            var recipient = GetCustomer(user);
             if (recipient == null)
                 return false;
-
-            customer.Account.Balance -= amount;
-            recipient.Account.Balance += amount;
 
             AddTransaction(amount, customer, recipient);
 
@@ -72,12 +67,7 @@ namespace SimpleBanking
 
         public bool CustomerExists((string user, string pin) credentials) => GetCustomer(credentials) != null;
 
-        public bool VerifyUserExist(string user)
-        {
-            var hashedUser = tools.HashString(user);
-            return bankDb.Customers.ToList()//I am aware this is bad, but at least is secure and for small simple application should be relatively fine
-                .FirstOrDefault(x => tools.CompareHashes(x.User, hashedUser)) != null;
-        }
+        public bool VerifyUserExist(string user) => GetCustomer(user) != null;
 
         public bool Withdraw((string user, string pin) credentials, double amount)
         {
@@ -85,30 +75,39 @@ namespace SimpleBanking
             if (customer == null)
                 return false;
 
-            customer.Account.Balance -= amount;
-
-            AddTransaction(amount, null, customer);
+            AddTransaction(amount, customer, null);
 
             var numberOfSavedItems = bankDb.SaveChanges();
             return numberOfSavedItems == 3;
         }
 
         private void AddTransaction(double amount, Customer from, Customer to)
-            => bankDb.Transactions.Add(new Transaction()
-            {
-                Amount = amount,
-                TimeOfExecution = DateTime.Now,
-                From = from,
-                To = to
-            });
+        { }
+        //=> bankDb.Transactions.Add(new Transaction()
+        //{
+        //    Amount = amount,
+        //    TimeOfExecution = DateTime.Now,
+        //    From = from,
+        //    To = to
+        //});
 
         private Customer GetCustomer((string user, string pin) credentials)
         {
-            var hashedUser = tools.HashString(credentials.user);
-            var hashedPin = tools.HashString(credentials.pin);
+            return default;
+            //var hashedUser = tools.HashString(credentials.user);
+            //var hashedPin = tools.HashString(credentials.pin);
 
-            return bankDb.Customers.ToList()//I am aware this is bad, but at least is secure and for small simple application should be relatively fine
-                .FirstOrDefault(x => tools.CompareHashes(x.User, hashedUser) && tools.CompareHashes(x.Pin, hashedPin));
+            //return bankDb.Customers
+            //    .FirstOrDefault(x => string.Equals(x.User, hashedUser) && string.Equals(x.Pin, hashedPin));
+        }
+
+        private Customer GetCustomer(string user)
+        {
+            return default;
+            //var hashedUser = tools.HashString(user);
+
+            //return bankDb.Customers
+            //    .FirstOrDefault(x => string.Equals(x.User, hashedUser));
         }
     }
 }

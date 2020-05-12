@@ -5,10 +5,10 @@ namespace SimpleBanking
 {
     public class Tools
     {
-        public byte[] HashString(string input)
+        public string HashString(string input)
         {
             using (SHA512 sha512Hash = SHA512.Create())
-                return sha512Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+                return string.Join("-", sha512Hash.ComputeHash(Encoding.UTF8.GetBytes(input)));
         }
 
         public bool CompareHashes(byte[] first, byte[] second)
