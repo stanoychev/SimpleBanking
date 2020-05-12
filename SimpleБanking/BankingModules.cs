@@ -9,7 +9,7 @@ namespace SimpleBanking
             this.Bind<IBankDb>().To<BankDb>().InSingletonScope();
             this.Bind<IDbService>().To<DbService>().InSingletonScope();
 
-            this.Bind<IBankManager>().To<BankManager>().InSingletonScope();
+            this.Bind<IATM>().To<ATM>().InSingletonScope();
             
             this.Bind<ICommandParser>().To<CommandParser>().InSingletonScope();
 

@@ -76,7 +76,7 @@
   <ItemGroup>
     <Compile Include="BankCommands.cs" />
     <Compile Include="BankDb.cs" />
-    <Compile Include="BankManager.cs" />
+    <Compile Include="ATM.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="ConsoleBankEngine.cs" />
     <Compile Include="BankingModules.cs" />

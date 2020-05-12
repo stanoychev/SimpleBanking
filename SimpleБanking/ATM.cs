@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SimpleBanking
 {
-    public interface IBankManager
+    public interface IATM
     {
         void ExecuteCommand(IBankCommand command);
         string Result { get; }
     }
 
-    public class BankManager : IBankManager
+    public class ATM : IATM
     {
         readonly IDbService dbService;
         private (string user, string pass) credentials;
 
-        public BankManager(IDbService dbService_) => dbService = dbService_;
+        public ATM(IDbService dbService_) => dbService = dbService_;
 
         public string Result { get; private set; }
         private bool IsLoggedIn => credentials.user != null;

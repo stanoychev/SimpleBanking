@@ -31,12 +31,12 @@ namespace SimpleBanking
             "Type [h] for list of available commands or [q] to quit.";
         #endregion
         readonly ICommandParser commandParser;
-        readonly IBankManager bankManager;
+        readonly IATM atm;
 
-        public ConsoleBankEngine(ICommandParser commandParser_, IBankManager bankManager_)
+        public ConsoleBankEngine(ICommandParser commandParser_, IATM atm_)
         {
             commandParser = commandParser_;
-            bankManager = bankManager_;
+            atm = atm_;
         }
 
         public void Run()
@@ -62,8 +62,8 @@ namespace SimpleBanking
                     continue;
                 }
 
-                bankManager.ExecuteCommand(command);
-                Console.WriteLine(bankManager.Result);
+                atm.ExecuteCommand(command);
+                Console.WriteLine(atm.Result);
             }
         }
     }
