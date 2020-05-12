@@ -125,6 +125,18 @@
     <Compile Include="Migrations\202005120059159_customerName.designer.cs">
       <DependentUpon>202005120059159_customerName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005122130421_drop2.cs" />
+    <Compile Include="Migrations\202005122130421_drop2.designer.cs">
+      <DependentUpon>202005122130421_drop2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005122131250_dbdesignchange.cs" />
+    <Compile Include="Migrations\202005122131250_dbdesignchange.designer.cs">
+      <DependentUpon>202005122131250_dbdesignchange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005122145518_updateuser.cs" />
+    <Compile Include="Migrations\202005122145518_updateuser.designer.cs">
+      <DependentUpon>202005122145518_updateuser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -179,6 +191,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005120059159_customerName.resx">
       <DependentUpon>202005120059159_customerName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122130421_drop2.resx">
+      <DependentUpon>202005122130421_drop2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122131250_dbdesignchange.resx">
+      <DependentUpon>202005122131250_dbdesignchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122145518_updateuser.resx">
+      <DependentUpon>202005122145518_updateuser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -82,32 +82,32 @@ namespace SimpleBanking
         }
 
         private void AddTransaction(double amount, Customer from, Customer to)
-        { }
-        //=> bankDb.Transactions.Add(new Transaction()
-        //{
-        //    Amount = amount,
-        //    TimeOfExecution = DateTime.Now,
-        //    From = from,
-        //    To = to
-        //});
+        //{ }
+        => bankDb.Transactions.Add(new Transaction()
+        {
+            Amount = amount,
+            TimeOfExecution = DateTime.Now,
+            From = from,
+            To = to
+        });
 
         private Customer GetCustomer((string user, string pin) credentials)
         {
-            return default;
-            //var hashedUser = tools.HashString(credentials.user);
-            //var hashedPin = tools.HashString(credentials.pin);
+            //return default;
+            var hashedUser = tools.HashString(credentials.user);
+            var hashedPin = tools.HashString(credentials.pin);
 
-            //return bankDb.Customers
-            //    .FirstOrDefault(x => string.Equals(x.User, hashedUser) && string.Equals(x.Pin, hashedPin));
+            return bankDb.Customers
+                .FirstOrDefault(x => string.Equals(x.User, hashedUser) && string.Equals(x.Pin, hashedPin));
         }
 
         private Customer GetCustomer(string user)
         {
-            return default;
-            //var hashedUser = tools.HashString(user);
+            //return default;
+            var hashedUser = tools.HashString(user);
 
-            //return bankDb.Customers
-            //    .FirstOrDefault(x => string.Equals(x.User, hashedUser));
+            return bankDb.Customers
+                .FirstOrDefault(x => string.Equals(x.User, hashedUser));
         }
     }
 }

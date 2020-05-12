@@ -9,8 +9,8 @@ namespace SimpleBanking
 {
     public interface IBankDb
     {
-        //IDbSet<Transaction> Transactions { get; set; }
-        //IDbSet<Customer> Customers { get; set; }
+        IDbSet<Transaction> Transactions { get; set; }
+        IDbSet<Customer> Customers { get; set; }
         int SaveChanges();
     }
 
@@ -20,8 +20,8 @@ namespace SimpleBanking
 
         public BankDb(string dbPath) : base($"Server=.\\SQLEXPRESS;AttachDbFilename={dbPath}BankDb.mdf;Initial Catalog=BankDb;Integrated Security=True") { }
 
-        //public IDbSet<Transaction> Transactions { get; set; }
-        //public IDbSet<Customer> Customers { get; set; }
+        public IDbSet<Transaction> Transactions { get; set; }
+        public IDbSet<Customer> Customers { get; set; }
     }
 
     public class Transaction
@@ -40,14 +40,14 @@ namespace SimpleBanking
 
         [Required]
         [Index(IsUnique = true)]
-        [StringLength(1024)]
+        [MaxLength(256)]
         public string User { get; set; }
 
         [Required]
         public string Pin { get; set; }
 
         [Required]
-        [MaxLength(64)]
+        [MaxLength(256)]
         public string Name { get; set; }
 
         public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
