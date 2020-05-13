@@ -161,6 +161,22 @@
     <Compile Include="Migrations\202005130004222_drop4.designer.cs">
       <DependentUpon>202005130004222_drop4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005130125557_edit.cs" />
+    <Compile Include="Migrations\202005130125557_edit.designer.cs">
+      <DependentUpon>202005130125557_edit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005130126279_edit1.cs" />
+    <Compile Include="Migrations\202005130126279_edit1.designer.cs">
+      <DependentUpon>202005130126279_edit1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005130132376_edit2.cs" />
+    <Compile Include="Migrations\202005130132376_edit2.designer.cs">
+      <DependentUpon>202005130132376_edit2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005130133538_edit3.cs" />
+    <Compile Include="Migrations\202005130133538_edit3.designer.cs">
+      <DependentUpon>202005130133538_edit3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -242,6 +258,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005130004222_drop4.resx">
       <DependentUpon>202005130004222_drop4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005130125557_edit.resx">
+      <DependentUpon>202005130125557_edit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005130126279_edit1.resx">
+      <DependentUpon>202005130126279_edit1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005130132376_edit2.resx">
+      <DependentUpon>202005130132376_edit2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005130133538_edit3.resx">
+      <DependentUpon>202005130133538_edit3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

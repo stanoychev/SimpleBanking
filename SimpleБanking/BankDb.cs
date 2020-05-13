@@ -30,17 +30,12 @@ namespace SimpleBanking
         public double Amount { get; set; }
         public DateTime? Date { get; set; }
 
-        [ForeignKey("From")]
-        public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
-
-        public Customer From { get; set; }
-        public Customer To { get; set; }
+        public virtual Customer From { get; set; }
+        public virtual Customer To { get; set; }
     }
 
     public class Customer
     {
-        [Key]
         public int CustomerId { get; set; }
 
         [Required]
@@ -55,6 +50,6 @@ namespace SimpleBanking
         [MaxLength(100)]
         public string Name { get; set; }
 
-        public virtual ICollection<Transaction> Transactions => new HashSet<Transaction>();
+        public virtual ICollection<Transaction> Transactions { get; set; } = new HashSet<Transaction>();
     }
 }
