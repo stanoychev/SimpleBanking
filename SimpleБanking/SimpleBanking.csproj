@@ -153,6 +153,14 @@
     <Compile Include="Migrations\202005122242270_updateuser3.designer.cs">
       <DependentUpon>202005122242270_updateuser3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005122333198_rename1.cs" />
+    <Compile Include="Migrations\202005122333198_rename1.designer.cs">
+      <DependentUpon>202005122333198_rename1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005130004222_drop4.cs" />
+    <Compile Include="Migrations\202005130004222_drop4.designer.cs">
+      <DependentUpon>202005130004222_drop4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -228,6 +236,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005122242270_updateuser3.resx">
       <DependentUpon>202005122242270_updateuser3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005122333198_rename1.resx">
+      <DependentUpon>202005122333198_rename1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005130004222_drop4.resx">
+      <DependentUpon>202005130004222_drop4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

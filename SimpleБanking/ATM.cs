@@ -118,7 +118,7 @@ namespace SimpleBanking
             {
                 var amount = double.Parse(inputParameters[ArgumentType.Amount]);
                 var recipient = inputParameters[ArgumentType.User];
-                var userExist = dbService.VerifyUserExist(recipient);
+                var userExist = dbService.CustomerExists(recipient);
                 var balance = dbService.GetBalance(credentials);
 
                 if (!balance.HasValue)
