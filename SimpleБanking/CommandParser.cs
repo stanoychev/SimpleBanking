@@ -37,10 +37,10 @@ namespace SimpleBanking
         private bool PinIsValid(string pin) => Regex.IsMatch(pin, @"^[0-9]+$");
         //amount <= 0 will be validated in the command itself
         private bool AmountIsValid(string amount) => 
-            double.TryParse(amount, out var a) && 
-            (amount.Contains(".") || amount.Contains(",")) ?
+            double.TryParse(amount, out _) && 
+            ((amount.Contains(".") || amount.Contains(",")) ?
                 amount.Split(new char[] { ',', '.'})[1].Length <= 2 :
-                true;
+                true);
 
         private IBankCommand ValidateLogin(string[] commandParameters)
         {

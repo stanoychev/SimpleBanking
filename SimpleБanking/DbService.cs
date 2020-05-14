@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SimpleBanking
@@ -14,44 +15,6 @@ namespace SimpleBanking
         string GetFormatedHistory((string user, string pin) credentials);
     }
 
-    //public class DbService : IDbService
-    //{
-    //    public bool CustomerExists((string user, string pin) credentials)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public bool CustomerExists(string user)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public bool Deposit((string user, string pin) credentials, double amount)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public double? GetBalance((string user, string pin) credentials)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public string GetFormatedHistory((string user, string pin) credentials)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public bool Transfter((string user, string pin) credentials, double amount, string user)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public bool Withdraw((string user, string pin) credentials, double amount)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-    //}
-
     public class DbService : IDbService
     {
         readonly IBankDb bankDb;
@@ -65,7 +28,7 @@ namespace SimpleBanking
             if (customer == null)
                 return false;
 
-            AddTransaction(customer, amount, null, customer);
+            AddTransaction(amount, null, customer);
 
             var numberOfSavedItems = bankDb.SaveChanges();
             return numberOfSavedItems == 3;
@@ -76,9 +39,15 @@ namespace SimpleBanking
             var customer = GetCustomer(credentials);
             if (customer == null)
                 return null;
-            throw new Exception();
-            return customer.Transactions
-                .Select(transaction => transaction.From == null ? transaction.Amount : -transaction.Amount).Sum();
+
+            return customer.Transactions.ToList()
+                .Select(transaction =>
+                {
+                    if (transaction.From == null || transaction.To == null)
+                        return transaction.From == null ? transaction.Amount : -transaction.Amount;
+
+                    return transaction.From.CustomerId == customer.CustomerId ? -transaction.Amount : transaction.Amount;
+                }).Sum();
         }
 
         public string GetFormatedHistory((string user, string pin) credentials)
@@ -111,10 +80,10 @@ namespace SimpleBanking
             if (recipient == null)
                 return false;
 
-            AddTransaction(customer, amount, customer, recipient);
+            AddTransaction(amount, customer, recipient);
 
             var numberOfSavedItems = bankDb.SaveChanges();
-            return numberOfSavedItems == 4;
+            return numberOfSavedItems == 8;
         }
 
         public bool CustomerExists((string user, string pin) credentials) => GetCustomer(credentials) != null;
@@ -127,21 +96,30 @@ namespace SimpleBanking
             if (customer == null)
                 return false;
 
-            AddTransaction(customer, amount, customer, null);
+            AddTransaction(amount, customer, null);
 
             var numberOfSavedItems = bankDb.SaveChanges();
             return numberOfSavedItems == 3;
         }
 
-        private void AddTransaction(Customer customer, double amount, Customer from, Customer to)
-            => bankDb.Customers.First(x => x.CustomerId == customer.CustomerId)
-            .Transactions.Add(new Transaction()
-            {
-                Amount = amount,
-                Date = DateTime.Now,
-                From = from,
-                To = to
-            });
+        private void AddTransaction(double amount, Customer from, Customer to)
+        {
+            var customers = new List<int>();
+            if (from != null)
+                customers.Add(from.CustomerId);
+
+            if (to != null)
+                customers.Add(to.CustomerId);
+
+            bankDb.Customers.Where(x => customers.Contains(x.CustomerId)).ToList()
+                .ForEach(customer => customer.Transactions.Add(new Transaction()
+                {
+                    Amount = amount,
+                    Date = DateTime.Now,
+                    From = from,
+                    To = to
+                }));
+        }
 
         private Customer GetCustomer((string user, string pin) credentials)
         {

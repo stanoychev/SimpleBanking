@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
 
@@ -15,13 +14,7 @@ namespace SimpleBanking.Migrations
 
         protected override void Seed(BankDb context)
         {
-            foreach (var item in context.Customers)
-                context.Customers.Remove(item);
-
-            foreach (var item in context.Transactions)
-                context.Transactions.Remove(item);
-            
-            context.SaveChanges();
+            CleanContext(context);
 
             if (context.Customers.Any())
                 return;
@@ -56,6 +49,17 @@ namespace SimpleBanking.Migrations
             context.Transactions.Add(transaction);
             context.SaveChanges();
             context.Customers.First(x => string.Equals(x.User, customer.User)).Transactions.Add(transaction);
+            context.SaveChanges();
+        }
+
+        void CleanContext(BankDb context)
+        {
+            foreach (var item in context.Customers)
+                context.Customers.Remove(item);
+
+            foreach (var item in context.Transactions)
+                context.Transactions.Remove(item);
+
             context.SaveChanges();
         }
     }
