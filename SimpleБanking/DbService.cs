@@ -52,22 +52,23 @@ namespace SimpleBanking
 
         public string GetFormatedHistory((string user, string pin) credentials)
         {
-            throw new Exception();
             var customer = GetCustomer(credentials);
             if (customer == null)
                 return $"[{credentials.user}] not found.";
 
-            return $"History for [{credentials.user}]:" +
+            return $"History for [{credentials.user}]:\n" +
                 string.Join("\n", customer.Transactions
                 .OrderByDescending(x => x.Date)
                 .ToList()
                 .Select(transaction =>
-                        "[Date" + transaction.Date.Value.ToString("hh:mm:ss dd/MM/yyyy") + "]" +
-                        transaction.From == null ?
-                        "[Deposit]" : transaction.To == null ?
-                        "[Withdraw]" :
-                        $"[Transaction from [{transaction.From.Name}] to [{transaction.To.Name}]]" +
-                        $"[Amount {string.Format("{0:0.00}", transaction.Amount)}]"));
+                {
+                    var type = transaction.From == null ? "[Deposit]" : 
+                    transaction.To == null ? "[Withdraw]" :
+                    $"[Transfer from [{transaction.From.Name}] to [{transaction.To.Name}]]";
+
+                    return "[Date " + transaction.Date.Value.ToString("dd/MM/yyyy hh:mm:ss") + "]" +
+                    type + $"[Amount {string.Format("{0:0.00}", transaction.Amount)}]";
+                }));
         }
 
         public bool Transfter((string user, string pin) credentials, double amount, string user)
@@ -104,6 +105,9 @@ namespace SimpleBanking
 
         private void AddTransaction(double amount, Customer from, Customer to)
         {
+            if (from == null && to == null)
+                throw new ArgumentNullException("Sender and reciver are null.");
+
             var customers = new List<int>();
             if (from != null)
                 customers.Add(from.CustomerId);
