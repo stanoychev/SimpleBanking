@@ -26,17 +26,17 @@ namespace SimpleBanking
 
     public class Transaction
     {
-        public int TransactionId { get; set; }
+        public int Id { get; set; }
         public double Amount { get; set; }
         public DateTime? Date { get; set; }
 
-        public virtual Customer From { get; set; }
-        public virtual Customer To { get; set; }
+        public virtual Customer Sender { get; set; }
+        public virtual Customer Receiver { get; set; }
     }
 
     public class Customer
     {
-        public int CustomerId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Index(IsUnique = true)]

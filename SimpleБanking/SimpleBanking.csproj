@@ -81,101 +81,9 @@
     <Compile Include="ConsoleBankEngine.cs" />
     <Compile Include="BankingModules.cs" />
     <Compile Include="DbService.cs" />
-    <Compile Include="Migrations\202005102154089_customers.cs" />
-    <Compile Include="Migrations\202005102154089_customers.designer.cs">
-      <DependentUpon>202005102154089_customers.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005102158425_accountsAndTransactions.cs" />
-    <Compile Include="Migrations\202005102158425_accountsAndTransactions.designer.cs">
-      <DependentUpon>202005102158425_accountsAndTransactions.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005102203510_customerToAccount.cs" />
-    <Compile Include="Migrations\202005102203510_customerToAccount.designer.cs">
-      <DependentUpon>202005102203510_customerToAccount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005102226200_relationsupdate.cs" />
-    <Compile Include="Migrations\202005102226200_relationsupdate.designer.cs">
-      <DependentUpon>202005102226200_relationsupdate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005102329077_drop.cs" />
-    <Compile Include="Migrations\202005102329077_drop.designer.cs">
-      <DependentUpon>202005102329077_drop.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005102330050_rename.cs" />
-    <Compile Include="Migrations\202005102330050_rename.designer.cs">
-      <DependentUpon>202005102330050_rename.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005102347089_relationsupdate1.cs" />
-    <Compile Include="Migrations\202005102347089_relationsupdate1.designer.cs">
-      <DependentUpon>202005102347089_relationsupdate1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005102349219_relationsupdate2.cs" />
-    <Compile Include="Migrations\202005102349219_relationsupdate2.designer.cs">
-      <DependentUpon>202005102349219_relationsupdate2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005112229538_drop1.cs" />
-    <Compile Include="Migrations\202005112229538_drop1.designer.cs">
-      <DependentUpon>202005112229538_drop1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005112230335_build.cs" />
-    <Compile Include="Migrations\202005112230335_build.designer.cs">
-      <DependentUpon>202005112230335_build.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005120059159_customerName.cs" />
-    <Compile Include="Migrations\202005120059159_customerName.designer.cs">
-      <DependentUpon>202005120059159_customerName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122130421_drop2.cs" />
-    <Compile Include="Migrations\202005122130421_drop2.designer.cs">
-      <DependentUpon>202005122130421_drop2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122131250_dbdesignchange.cs" />
-    <Compile Include="Migrations\202005122131250_dbdesignchange.designer.cs">
-      <DependentUpon>202005122131250_dbdesignchange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122145518_updateuser.cs" />
-    <Compile Include="Migrations\202005122145518_updateuser.designer.cs">
-      <DependentUpon>202005122145518_updateuser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122234268_updateuser1.cs" />
-    <Compile Include="Migrations\202005122234268_updateuser1.designer.cs">
-      <DependentUpon>202005122234268_updateuser1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122239257_drop3.cs" />
-    <Compile Include="Migrations\202005122239257_drop3.designer.cs">
-      <DependentUpon>202005122239257_drop3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122240444_updateuser2.cs" />
-    <Compile Include="Migrations\202005122240444_updateuser2.designer.cs">
-      <DependentUpon>202005122240444_updateuser2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122242270_updateuser3.cs" />
-    <Compile Include="Migrations\202005122242270_updateuser3.designer.cs">
-      <DependentUpon>202005122242270_updateuser3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005122333198_rename1.cs" />
-    <Compile Include="Migrations\202005122333198_rename1.designer.cs">
-      <DependentUpon>202005122333198_rename1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005130004222_drop4.cs" />
-    <Compile Include="Migrations\202005130004222_drop4.designer.cs">
-      <DependentUpon>202005130004222_drop4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005130125557_edit.cs" />
-    <Compile Include="Migrations\202005130125557_edit.designer.cs">
-      <DependentUpon>202005130125557_edit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005130126279_edit1.cs" />
-    <Compile Include="Migrations\202005130126279_edit1.designer.cs">
-      <DependentUpon>202005130126279_edit1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005130132376_edit2.cs" />
-    <Compile Include="Migrations\202005130132376_edit2.designer.cs">
-      <DependentUpon>202005130132376_edit2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202005130133538_edit3.cs" />
-    <Compile Include="Migrations\202005130133538_edit3.designer.cs">
-      <DependentUpon>202005130133538_edit3.cs</DependentUpon>
+    <Compile Include="Migrations\202005142054151_buildBankDb.cs" />
+    <Compile Include="Migrations\202005142054151_buildBankDb.designer.cs">
+      <DependentUpon>202005142054151_buildBankDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -199,77 +107,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202005102154089_customers.resx">
-      <DependentUpon>202005102154089_customers.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005102158425_accountsAndTransactions.resx">
-      <DependentUpon>202005102158425_accountsAndTransactions.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005102203510_customerToAccount.resx">
-      <DependentUpon>202005102203510_customerToAccount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005102226200_relationsupdate.resx">
-      <DependentUpon>202005102226200_relationsupdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005102329077_drop.resx">
-      <DependentUpon>202005102329077_drop.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005102330050_rename.resx">
-      <DependentUpon>202005102330050_rename.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005102347089_relationsupdate1.resx">
-      <DependentUpon>202005102347089_relationsupdate1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005102349219_relationsupdate2.resx">
-      <DependentUpon>202005102349219_relationsupdate2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005112229538_drop1.resx">
-      <DependentUpon>202005112229538_drop1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005112230335_build.resx">
-      <DependentUpon>202005112230335_build.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005120059159_customerName.resx">
-      <DependentUpon>202005120059159_customerName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122130421_drop2.resx">
-      <DependentUpon>202005122130421_drop2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122131250_dbdesignchange.resx">
-      <DependentUpon>202005122131250_dbdesignchange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122145518_updateuser.resx">
-      <DependentUpon>202005122145518_updateuser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122234268_updateuser1.resx">
-      <DependentUpon>202005122234268_updateuser1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122239257_drop3.resx">
-      <DependentUpon>202005122239257_drop3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122240444_updateuser2.resx">
-      <DependentUpon>202005122240444_updateuser2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122242270_updateuser3.resx">
-      <DependentUpon>202005122242270_updateuser3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005122333198_rename1.resx">
-      <DependentUpon>202005122333198_rename1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005130004222_drop4.resx">
-      <DependentUpon>202005130004222_drop4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005130125557_edit.resx">
-      <DependentUpon>202005130125557_edit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005130126279_edit1.resx">
-      <DependentUpon>202005130126279_edit1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005130132376_edit2.resx">
-      <DependentUpon>202005130132376_edit2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202005130133538_edit3.resx">
-      <DependentUpon>202005130133538_edit3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202005142054151_buildBankDb.resx">
+      <DependentUpon>202005142054151_buildBankDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

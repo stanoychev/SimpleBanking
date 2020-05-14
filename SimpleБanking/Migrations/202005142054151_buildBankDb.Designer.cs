@@ -7,13 +7,13 @@ namespace SimpleBanking.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class relationsupdate2 : IMigrationMetadata
+    public sealed partial class buildBankDb : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(relationsupdate2));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(buildBankDb));
         
         string IMigrationMetadata.Id
         {
-            get { return "202005102349219_relationsupdate2"; }
+            get { return "202005142054151_buildBankDb"; }
         }
         
         string IMigrationMetadata.Source

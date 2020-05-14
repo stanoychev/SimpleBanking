@@ -43,10 +43,10 @@ namespace SimpleBanking
             return customer.Transactions.ToList()
                 .Select(transaction =>
                 {
-                    if (transaction.From == null || transaction.To == null)
-                        return transaction.From == null ? transaction.Amount : -transaction.Amount;
+                    if (transaction.Sender == null || transaction.Receiver == null)
+                        return transaction.Sender == null ? transaction.Amount : -transaction.Amount;
 
-                    return transaction.From.CustomerId == customer.CustomerId ? -transaction.Amount : transaction.Amount;
+                    return transaction.Sender.Id == customer.Id ? -transaction.Amount : transaction.Amount;
                 }).Sum();
         }
 
@@ -62,9 +62,9 @@ namespace SimpleBanking
                 .ToList()
                 .Select(transaction =>
                 {
-                    var type = transaction.From == null ? "[Deposit]" : 
-                    transaction.To == null ? "[Withdraw]" :
-                    $"[Transfer from [{transaction.From.Name}] to [{transaction.To.Name}]]";
+                    var type = transaction.Sender == null ? "[Deposit]" : 
+                    transaction.Receiver == null ? "[Withdraw]" :
+                    $"[Transfer from [{transaction.Sender.Name}] to [{transaction.Receiver.Name}]]";
 
                     return "[Date " + transaction.Date.Value.ToString("dd/MM/yyyy hh:mm:ss") + "]" +
                     type + $"[Amount {string.Format("{0:0.00}", transaction.Amount)}]";
@@ -110,18 +110,18 @@ namespace SimpleBanking
 
             var customers = new List<int>();
             if (from != null)
-                customers.Add(from.CustomerId);
+                customers.Add(from.Id);
 
             if (to != null)
-                customers.Add(to.CustomerId);
+                customers.Add(to.Id);
 
-            bankDb.Customers.Where(x => customers.Contains(x.CustomerId)).ToList()
+            bankDb.Customers.Where(x => customers.Contains(x.Id)).ToList()
                 .ForEach(customer => customer.Transactions.Add(new Transaction()
                 {
                     Amount = amount,
                     Date = DateTime.Now,
-                    From = from,
-                    To = to
+                    Sender = from,
+                    Receiver = to
                 }));
         }
 

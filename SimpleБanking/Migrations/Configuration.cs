@@ -35,14 +35,14 @@ namespace SimpleBanking.Migrations
                 Pin = tools.HashString(pin),
                 Name = name
             };
-            
+
             context.Customers.Add(customer);
 
             var transaction = new Transaction()
             {
                 Amount = amount,
-                From = null,
-                To = customer,
+                Sender = null,
+                Receiver = customer,
                 Date = DateTime.Now
             };
 
