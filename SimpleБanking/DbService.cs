@@ -21,7 +21,6 @@ namespace SimpleBanking
     public class DbService : IDbService
     {
         readonly IBankDb bankDb;
-        readonly Tools tools = new Tools();
 
         public DbService(IBankDb bankDb_) => bankDb = bankDb_;
 
@@ -106,7 +105,20 @@ namespace SimpleBanking
             return numberOfSavedItems == 3;
         }
 
-        private void AddTransaction(double amount, Customer from, Customer to)
+        public void CreateContextAndSeed()
+        {
+            //CleanContext(context);
+
+            if (bankDb.Customers.Any())
+                return;
+
+            Register(bankDb, 100000, "bank", "123", "Bank Manager");
+            Register(bankDb, 1000, "pesho", "111", "Petur Petkov");
+            Register(bankDb, 2000, "misho", "222", "Mihail Mihailov");
+            Register(bankDb, 3000, "gosho", "333", "Georgi Georgiev");
+        }
+
+        void AddTransaction(double amount, Customer from, Customer to)
         {
             if (from == null && to == null)
                 throw new ArgumentNullException("Sender and reciver are null.");
@@ -128,10 +140,10 @@ namespace SimpleBanking
                 }));
         }
 
-        private Customer GetCustomer((string user, string pin) credentials)
+        Customer GetCustomer((string user, string pin) credentials)
         {
-            var hashedUser = tools.HashString(credentials.user);
-            var hashedPin = tools.HashString(credentials.pin);
+            var hashedUser = HashString(credentials.user);
+            var hashedPin = HashString(credentials.pin);
 
             var customer = bankDb.Customers
                 .FirstOrDefault(x => string.Equals(x.User, hashedUser));
@@ -139,34 +151,19 @@ namespace SimpleBanking
             return string.Equals(customer.Pin, hashedPin) ? customer : null;
         }
 
-        private Customer GetCustomer(string user)
+        Customer GetCustomer(string user)
         {
-            var hashedUser = tools.HashString(user);
+            var hashedUser = HashString(user);
 
             return bankDb.Customers.FirstOrDefault(x => string.Equals(x.User, hashedUser));
         }
 
-        public void CreateContextAndSeed()
-        {
-            //CleanContext(context);
-
-            if (bankDb.Customers.Any())
-                return;
-
-            var tools = new Tools();
-
-            Register(bankDb, tools, 100000, "bank", "123", "Bank Manager");
-            Register(bankDb, tools, 1000, "pesho", "111", "Petur Petkov");
-            Register(bankDb, tools, 2000, "misho", "222", "Mihail Mihailov");
-            Register(bankDb, tools, 3000, "gosho", "333", "Georgi Georgiev");
-        }
-
-        void Register(IBankDb context, Tools tools, double amount, string user, string pin, string name)
+        void Register(IBankDb context, double amount, string user, string pin, string name)
         {
             var customer = new Customer()
             {
-                User = tools.HashString(user),
-                Pin = tools.HashString(pin),
+                User = HashString(user),
+                Pin = HashString(pin),
                 Name = name
             };
 
