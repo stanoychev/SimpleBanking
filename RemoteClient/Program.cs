@@ -7,18 +7,26 @@ namespace RemoteClient
     {
         public static void Main()
         {
-            var service = new ServiceClient();
-            Console.WriteLine(service.SayWellcome());
-            while (true)
-            {
-                var command = Console.ReadLine();
-                if (command.ToLower() == "q")
+			try
+			{
+                var service = new ServiceClient();
+                Console.WriteLine(service.SayWellcome());
+                while (true)
                 {
-                    service.EndSession();
-                    break;
+                    var command = Console.ReadLine();
+                    if (command.ToLower() == "q")
+                    {
+                        service.EndSession();
+                        break;
+                    }
+                    Console.WriteLine(service.ExecuteCommand(command));
                 }
-                Console.WriteLine(service.ExecuteCommand(command));
             }
+			catch (Exception ex)
+			{
+                Console.WriteLine(ex.Message);
+                Console.ReadLine();
+			}
         }
     }
 }
