@@ -12,14 +12,26 @@ namespace RemoteClient.ServiceReference1 {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService", SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IService {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SayWellcome", ReplyAction="http://tempuri.org/IService/SayWellcomeResponse")]
+        string SayWellcome();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SayWellcome", ReplyAction="http://tempuri.org/IService/SayWellcomeResponse")]
+        System.Threading.Tasks.Task<string> SayWellcomeAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ExecuteCommand", ReplyAction="http://tempuri.org/IService/ExecuteCommandResponse")]
         string ExecuteCommand(string command);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ExecuteCommand", ReplyAction="http://tempuri.org/IService/ExecuteCommandResponse")]
         System.Threading.Tasks.Task<string> ExecuteCommandAsync(string command);
+        
+        [System.ServiceModel.OperationContractAttribute(IsTerminating=true, Action="http://tempuri.org/IService/EndSession", ReplyAction="http://tempuri.org/IService/EndSessionResponse")]
+        void EndSession();
+        
+        [System.ServiceModel.OperationContractAttribute(IsTerminating=true, Action="http://tempuri.org/IService/EndSession", ReplyAction="http://tempuri.org/IService/EndSessionResponse")]
+        System.Threading.Tasks.Task EndSessionAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -49,12 +61,28 @@ namespace RemoteClient.ServiceReference1 {
                 base(binding, remoteAddress) {
         }
         
+        public string SayWellcome() {
+            return base.Channel.SayWellcome();
+        }
+        
+        public System.Threading.Tasks.Task<string> SayWellcomeAsync() {
+            return base.Channel.SayWellcomeAsync();
+        }
+        
         public string ExecuteCommand(string command) {
             return base.Channel.ExecuteCommand(command);
         }
         
         public System.Threading.Tasks.Task<string> ExecuteCommandAsync(string command) {
             return base.Channel.ExecuteCommandAsync(command);
+        }
+        
+        public void EndSession() {
+            base.Channel.EndSession();
+        }
+        
+        public System.Threading.Tasks.Task EndSessionAsync() {
+            return base.Channel.EndSessionAsync();
         }
     }
 }

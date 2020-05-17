@@ -46,7 +46,7 @@
             var command = commandParser.ParseCommand(input);
 
             if (command.CommandId == Command.Quit)
-                return;
+                System.Environment.Exit(0);
             else if (command.CommandId == Command.Help)
             {
                 Status = help;
