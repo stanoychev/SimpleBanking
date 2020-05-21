@@ -45,6 +45,9 @@ namespace SimpleBanking
         [MaxLength(100)]
         public string Name { get; set; }
 
+        public string Cookie { get; set; }
+        public DateTime? ExpiresOn { get; set; }
+
         public virtual ICollection<Transaction> Transactions { get; set; } = new HashSet<Transaction>();
     }
 }

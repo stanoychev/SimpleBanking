@@ -29,7 +29,7 @@ namespace RemoteService
         public Service()
         {
             kernel = new StandardKernel(new BankingModules());
-            kernel.Get<IDbService>().CreateContextAndSeed();
+            kernel.Get<IDbService>().CreateDbAndSeed();
 
             remoteEngine = kernel.Get<IRemoteEngine>();
         }

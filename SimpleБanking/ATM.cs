@@ -11,12 +11,17 @@ namespace SimpleBanking
     public class ATM : IATM
     {
         readonly IDbService dbService;
-        private (string user, string pass) credentials;
+        readonly ICustomerService customerService;
+        string name;
+        string cookie;
 
-        public ATM(IDbService dbService_) => dbService = dbService_;
+        public ATM(IDbService dbService_, ICustomerService customerService_)
+        {
+            dbService = dbService_;
+            customerService = customerService_;
+        }
 
         public string Result { get; private set; }
-        private bool IsLoggedIn => credentials.user != null;
 
         public void ExecuteCommand(IBankCommand command)
         {
@@ -48,96 +53,121 @@ namespace SimpleBanking
 
         private string LogIn(Dictionary<ArgumentType, string> inputParameters)
         {
-            if (IsLoggedIn)
-                return $"[{credentials}] is currently logged in. Log out first.";
-            else
-            {
-                var enteredCredentials = (inputParameters[ArgumentType.User], inputParameters[ArgumentType.Pin]);
+            if (customerService.IsLoggedIn(cookie) && !customerService.IsExpired(cookie))
+                return "Already logged in. Log out first";
 
-                var isValid = dbService.CustomerExists(enteredCredentials);
+            var credentials = (inputParameters[ArgumentType.User], inputParameters[ArgumentType.Pin]);
+            var info = customerService.Login(credentials);
 
-                if (isValid)
-                {
-                    credentials = enteredCredentials;
-                    return $"[{credentials.user}] successuly logged in.";
-                }
-                else
-                    return "User or pin incorrect.";
-            }
+            if (info.cookie == default)
+                return "Wrong credentials.";
+
+            cookie = info.cookie;
+            name = info.name;
+            return $"[{name}] logged in.";
         }
 
         private string Logout()
         {
-            if (IsLoggedIn)
-            {
-                credentials = default;
-                return "User successfully logged out.";
-            }
-            else
-                return "User already logged out.";
+            var isLoggedIn = customerService.IsLoggedIn(cookie);
+
+            if (!isLoggedIn)
+                return "Already logged out.";
+
+            customerService.Logout(cookie);
+            cookie = default;
+            return "User logged out.";
         }
 
         private string GetBalance()
-            => IsLoggedIn ? string.Format("{0:0.00}", dbService.GetBalance(credentials) ?? 0d) : "Not logged in.";
+        {
+            if (!customerService.IsLoggedIn(cookie))
+                return "Not logged in.";
+
+            if (customerService.IsExpired(cookie))
+                return "Session expired";
+
+            return string.Format("{0:0.00}", dbService.GetBalance(cookie) ?? 0d);
+        }
 
         private string Withdraw(Dictionary<ArgumentType, string> inputParameters)
         {
-            if (IsLoggedIn)
-            {
-                var amount = double.Parse(inputParameters[ArgumentType.Amount]);
-                var balance = dbService.GetBalance(credentials);
-
-                if (!balance.HasValue)
-                    return $"[System error] User [{credentials.user}] has changed credentials. Logout and login again.";
-                else if (amount <= 0)
-                    return "Withdraw amount must be positive value.";
-                else if (balance > amount)
-                    return dbService.Withdraw(credentials, amount) ? string.Format("Withdrawn {0:0.00}", amount) : "[System error.] Witdraw failed.";
-                else
-                    return "Insufficient funds.";
-            }
-            else
+            if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";
+
+            if (customerService.IsExpired(cookie))
+                return "Session expired";
+
+            var amount = double.Parse(inputParameters[ArgumentType.Amount]);
+            var balance = dbService.GetBalance(cookie);
+
+            if (!balance.HasValue)
+                return $"[System error] Try logout and login again.";
+
+            if (amount <= 0)
+                return "Withdraw amount must be positive value.";
+
+            if (balance < amount)
+                return "Insufficient funds.";
+
+            return dbService.Withdraw(cookie, amount) ? string.Format("Withdrawn {0:0.00}", amount) : "[System error.] Witdraw failed.";
         }
 
         private string Deposit(Dictionary<ArgumentType, string> inputParameters)
         {
-            if (IsLoggedIn)
-            {
-                var amount = double.Parse(inputParameters[ArgumentType.Amount]);
-
-                return amount <= 0 ? "Deposit amount must be positive value." : dbService.Deposit(credentials, amount) ? "Deposit successful." : "[System error.] Deposit failed.";
-            }
-            else
+            if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";
+
+            if (customerService.IsExpired(cookie))
+                return "Session expired";
+
+            var amount = double.Parse(inputParameters[ArgumentType.Amount]);
+            if (amount <= 0)
+                return "Deposit amount must be positive value.";
+
+            return dbService.Deposit(cookie, amount) ? "Deposit successful." : "[System error.] Deposit failed.";
         }
 
         private string Transfer(Dictionary<ArgumentType, string> inputParameters)
         {
-            if (IsLoggedIn)
-            {
-                var amount = double.Parse(inputParameters[ArgumentType.Amount]);
-                var recipient = inputParameters[ArgumentType.User];
-                var userExist = dbService.CustomerExists(recipient);
-                var balance = dbService.GetBalance(credentials);
-
-                if (!balance.HasValue)
-                    return $"[System error] User [{credentials.user}] has changed credentials. Logout and login again.";
-                else if (amount <= 0)
-                    return "Deposit amount must be positive value.";
-                else if (!userExist)
-                    return $"Recipient [{recipient}] not found.";
-                else if (string.Equals(recipient, credentials.user))
-                    return $"Can not transfer to self.";
-                else if (balance < amount)
-                    return $"[{credentials.user}] has insufficient funds.";
-                else
-                    return dbService.Transfter(credentials, amount, recipient) ? "Transfter successful." : "[System error.] Transfter failed.";
-            }
-            else
+            if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";
+
+            if (customerService.IsExpired(cookie))
+                return "Session expired";
+
+            var amount = double.Parse(inputParameters[ArgumentType.Amount]);
+            var recipient = inputParameters[ArgumentType.User];
+            var userExist = customerService.CustomerExists(recipient);
+            var balance = dbService.GetBalance(cookie);
+
+            if (!balance.HasValue)
+                return $"[System error] User [{name}] has changed credentials. Logout and login again.";
+
+            if (amount <= 0)
+                return "Deposit amount must be positive value.";
+
+            if (!userExist)
+                return $"Recipient [{recipient}] not found.";
+
+            if (string.Equals(recipient, name))
+                return $"Can not transfer to self.";
+
+            if (balance < amount)
+                return $"[{name}] has insufficient funds.";
+
+            return dbService.Transfter(cookie, amount, recipient) ? "Transfter successful." : "[System error.] Transfter failed.";
         }
 
-        private string GetHistory() => IsLoggedIn ? dbService.GetFormatedHistory(credentials) : "Not logged in.";
+        private string GetHistory()
+        {
+            if (!customerService.IsLoggedIn(cookie))
+                return "Not logged in.";
+
+            if (customerService.IsExpired(cookie))
+                return "Session expired";
+
+            return dbService.GetFormatedHistory(cookie);
+        }
     }
 }

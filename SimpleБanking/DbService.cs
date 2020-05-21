@@ -8,25 +8,28 @@ namespace SimpleBanking
 {
     public interface IDbService
     {
-        void CreateContextAndSeed();
-        bool CustomerExists((string user, string pin) credentials);
-        bool CustomerExists(string user);
-        double? GetBalance((string user, string pin) credentials);
-        bool Deposit((string user, string pin) credentials, double amount);
-        bool Withdraw((string user, string pin) credentials, double amount);
-        bool Transfter((string user, string pin) credentials, double amount, string user);
-        string GetFormatedHistory((string user, string pin) credentials);
+        void CreateDbAndSeed();
+        double? GetBalance(string cookie);
+        bool Deposit(string cookie, double amount);
+        bool Withdraw(string cookie, double amount);
+        bool Transfter(string cookie, double amount, string user);
+        string GetFormatedHistory(string cookie);
     }
 
     public class DbService : IDbService
     {
         readonly IBankDb bankDb;
+        readonly ICookieManager cookieManager;
 
-        public DbService(IBankDb bankDb_) => bankDb = bankDb_;
-
-        public bool Deposit((string user, string pin) credentials, double amount)
+        public DbService(IBankDb bankDb_, ICookieManager cookieManager_)
         {
-            var customer = GetCustomer(credentials);
+            bankDb = bankDb_;
+            cookieManager = cookieManager_;
+        }
+
+        public bool Deposit(string cookie, double amount)
+        {
+            var customer = GetCustomer(cookie);
             if (customer == null)
                 return false;
 
@@ -36,9 +39,9 @@ namespace SimpleBanking
             return numberOfSavedItems == 3;
         }
 
-        public double? GetBalance((string user, string pin) credentials)
+        public double? GetBalance(string cookie)
         {
-            var customer = GetCustomer(credentials);
+            var customer = GetCustomer(cookie);
             if (customer == null)
                 return null;
 
@@ -52,13 +55,13 @@ namespace SimpleBanking
                 }).Sum();
         }
 
-        public string GetFormatedHistory((string user, string pin) credentials)
+        public string GetFormatedHistory(string cookie)
         {
-            var customer = GetCustomer(credentials);
+            var customer = GetCustomer(cookie);
             if (customer == null)
-                return $"[{credentials.user}] not found.";
+                return $"User not found.";
 
-            return $"History for [{credentials.user}]:\n" +
+            return $"History for [{customer.Name}]:\n" +
                 string.Join("\n", customer.Transactions
                 .OrderByDescending(x => x.Date)
                 .ToList()
@@ -73,9 +76,9 @@ namespace SimpleBanking
                 }));
         }
 
-        public bool Transfter((string user, string pin) credentials, double amount, string user)
+        public bool Transfter(string cookie, double amount, string user)
         {
-            var customer = GetCustomer(credentials);
+            var customer = GetCustomer(cookie);
             if (customer == null)
                 return false;
 
@@ -89,13 +92,9 @@ namespace SimpleBanking
             return numberOfSavedItems == 8;
         }
 
-        public bool CustomerExists((string user, string pin) credentials) => GetCustomer(credentials) != null;
-
-        public bool CustomerExists(string user) => GetCustomer(user) != null;
-
-        public bool Withdraw((string user, string pin) credentials, double amount)
+        public bool Withdraw(string cookie, double amount)
         {
-            var customer = GetCustomer(credentials);
+            var customer = GetCustomer(cookie);
             if (customer == null)
                 return false;
 
@@ -105,7 +104,7 @@ namespace SimpleBanking
             return numberOfSavedItems == 3;
         }
 
-        public void CreateContextAndSeed()
+        public void CreateDbAndSeed()
         {
             //CleanContext(context);
 
@@ -140,22 +139,11 @@ namespace SimpleBanking
                 }));
         }
 
-        Customer GetCustomer((string user, string pin) credentials)
+        Customer GetCustomer(string cookie)
         {
-            var hashedUser = HashString(credentials.user);
-            var hashedPin = HashString(credentials.pin);
-
-            var customer = bankDb.Customers
-                .FirstOrDefault(x => string.Equals(x.User, hashedUser));
-
-            return string.Equals(customer.Pin, hashedPin) ? customer : null;
-        }
-
-        Customer GetCustomer(string user)
-        {
-            var hashedUser = HashString(user);
-
-            return bankDb.Customers.FirstOrDefault(x => string.Equals(x.User, hashedUser));
+            //todo check expire
+            var id = cookieManager.GetUserId(cookie);
+            return id > 0 ? bankDb.Customers.FirstOrDefault(x => x.Id == id) : null;
         }
 
         void Register(IBankDb context, double amount, string user, string pin, string name)

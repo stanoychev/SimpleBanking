@@ -11,6 +11,6 @@ namespace SimpleBanking.Migrations
         }
 
         protected override void Seed(BankDb context)
-            => new DbService(context).CreateContextAndSeed();
+            => new DbService(context, null).CreateDbAndSeed();
     }
 }

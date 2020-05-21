@@ -80,10 +80,16 @@
     <Compile Include="CommandParser.cs" />
     <Compile Include="ConsoleBankEngine.cs" />
     <Compile Include="BankingModules.cs" />
+    <Compile Include="CookieManager.cs" />
+    <Compile Include="CustomerService.cs" />
     <Compile Include="DbService.cs" />
     <Compile Include="Migrations\202005142054151_buildBankDb.cs" />
     <Compile Include="Migrations\202005142054151_buildBankDb.designer.cs">
       <DependentUpon>202005142054151_buildBankDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005190627167_addcookie.cs" />
+    <Compile Include="Migrations\202005190627167_addcookie.designer.cs">
+      <DependentUpon>202005190627167_addcookie.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -109,6 +115,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202005142054151_buildBankDb.resx">
       <DependentUpon>202005142054151_buildBankDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005190627167_addcookie.resx">
+      <DependentUpon>202005190627167_addcookie.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
