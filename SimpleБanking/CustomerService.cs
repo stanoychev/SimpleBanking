@@ -98,7 +98,7 @@ namespace SimpleBanking
             if (id < 0)
                 return true;
 
-            var expTime = bankDb.Customers.FirstOrDefault(x => x.Id == id)?.ExpiresOn;
+            var expTime = bankDb.Customers.FirstOrDefault(x => x.Id == id && x.Cookie == cookie)?.ExpiresOn;
             if (!expTime.HasValue)
                 return true;
 

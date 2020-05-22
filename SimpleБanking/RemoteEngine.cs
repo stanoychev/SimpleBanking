@@ -34,7 +34,6 @@
 
         public RemoteEngine(ICommandParser commandParser_, IATM atm_)
         {
-            throw new System.Exception("todo fix concurrency");
             commandParser = commandParser_;
             atm = atm_;
         }

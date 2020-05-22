@@ -82,7 +82,7 @@ namespace SimpleBanking
             if (customer == null)
                 return false;
 
-            var recipient = GetCustomer(user);
+            var recipient = GetCustomerByUserName(user);
             if (recipient == null)
                 return false;
 
@@ -141,9 +141,14 @@ namespace SimpleBanking
 
         Customer GetCustomer(string cookie)
         {
-            //todo check expire
             var id = cookieManager.GetUserId(cookie);
             return id > 0 ? bankDb.Customers.FirstOrDefault(x => x.Id == id) : null;
+        }
+
+        Customer GetCustomerByUserName(string user)
+        {
+            var hashedUser = HashString(user);
+            return bankDb.Customers.FirstOrDefault(x => x.User == hashedUser);
         }
 
         void Register(IBankDb context, double amount, string user, string pin, string name)
