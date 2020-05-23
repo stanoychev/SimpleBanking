@@ -78,7 +78,7 @@
     <Compile Include="BankDb.cs" />
     <Compile Include="ATM.cs" />
     <Compile Include="CommandParser.cs" />
-    <Compile Include="ConsoleBankEngine.cs" />
+    <Compile Include="BankEngine.cs" />
     <Compile Include="BankingModules.cs" />
     <Compile Include="CookieManager.cs" />
     <Compile Include="CustomerService.cs" />
@@ -94,7 +94,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

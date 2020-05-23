@@ -15,8 +15,7 @@ namespace SimpleBanking
 
             this.Bind<ICommandParser>().To<CommandParser>().InSingletonScope();
 
-            this.Bind<IConsoleBankEngine>().To<ConsoleBankEngine>().InSingletonScope();
-            this.Bind<IRemoteEngine>().To<RemoteEngine>().InSingletonScope();
+            this.Bind<IBankEngine>().To<BankEngine>().InSingletonScope();
         }
     }
 }

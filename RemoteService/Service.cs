@@ -9,8 +9,6 @@ namespace RemoteService
     public interface IService
     {
         [OperationContract(IsInitiating = true)]
-        string SayWellcome();
-        [OperationContract]
         string ExecuteCommand(string command);
         [OperationContract(IsTerminating = true)]
         void EndSession();
@@ -18,12 +16,7 @@ namespace RemoteService
 
     public class Service : IService
     {
-        const string wellcome =
-            "Bank started.\n" +
-            "Please type command.\n" +
-            "Type [h] for list of available commands or [q] to quit.";
-
-        readonly IRemoteEngine remoteEngine;
+        readonly IBankEngine bankEngine;
         readonly IKernel kernel;
 
         public Service()
@@ -31,17 +24,11 @@ namespace RemoteService
             kernel = new StandardKernel(new BankingModules());
             kernel.Get<IDbService>().CreateDbAndSeed();
 
-            remoteEngine = kernel.Get<IRemoteEngine>();
+            bankEngine = kernel.Get<IBankEngine>();
         }
 
-        public string ExecuteCommand(string command)
-        {
-            remoteEngine.SendCommand(command);
-            return remoteEngine.Status;
-        }
+        public string ExecuteCommand(string command) => bankEngine.ExecuteCommand_(command);
 
         public void EndSession() { }
-
-        public string SayWellcome() => wellcome;
     }
 }

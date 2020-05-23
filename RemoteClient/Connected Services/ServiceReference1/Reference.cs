@@ -15,12 +15,6 @@ namespace RemoteClient.ServiceReference1 {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService", SessionMode=System.ServiceModel.SessionMode.Required)]
     public interface IService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SayWellcome", ReplyAction="http://tempuri.org/IService/SayWellcomeResponse")]
-        string SayWellcome();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SayWellcome", ReplyAction="http://tempuri.org/IService/SayWellcomeResponse")]
-        System.Threading.Tasks.Task<string> SayWellcomeAsync();
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ExecuteCommand", ReplyAction="http://tempuri.org/IService/ExecuteCommandResponse")]
         string ExecuteCommand(string command);
         
@@ -59,14 +53,6 @@ namespace RemoteClient.ServiceReference1 {
         
         public ServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
-        }
-        
-        public string SayWellcome() {
-            return base.Channel.SayWellcome();
-        }
-        
-        public System.Threading.Tasks.Task<string> SayWellcomeAsync() {
-            return base.Channel.SayWellcomeAsync();
         }
         
         public string ExecuteCommand(string command) {

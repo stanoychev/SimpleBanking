@@ -1,12 +1,11 @@
 ﻿namespace SimpleBanking
 {
-    public interface IRemoteEngine
+    public interface IBankEngine
     {
-        string Status { get; }
-        void SendCommand(string command);
+        string ExecuteCommand_(string command);
     }
 
-    public class RemoteEngine : IRemoteEngine
+    public class BankEngine : IBankEngine
     {
         #region Messages
         const string help =
@@ -23,43 +22,39 @@
         const string invalidCommand =
             "Invalid input.\n" +
             "Type [h] for list of available commands or [q] to quit.";
-
-        const string wellcome =
-            "Bank started.\n" +
-            "Please type command.\n" +
-            "Type [h] for list of available commands or [q] to quit.";
         #endregion
         readonly ICommandParser commandParser;
         readonly IATM atm;
 
-        public RemoteEngine(ICommandParser commandParser_, IATM atm_)
+        public BankEngine(ICommandParser commandParser_, IATM atm_)
         {
             commandParser = commandParser_;
             atm = atm_;
         }
-        
-        public string Status { get; private set; }
 
-        public void SendCommand(string input)
+        public string ExecuteCommand_(string command_)
         {
-            Status = string.Empty;
+            var command = command_.ToLower();
+            var result = ExecuteCommand(command);
+            if (result == null)
+                return null;
+
+            return result;
+        }
+
+        string ExecuteCommand(string input)
+        {
             var command = commandParser.ParseCommand(input);
 
             if (command.CommandId == Command.Quit)
-                return;
+                return null;
             else if (command.CommandId == Command.Help)
-            {
-                Status = help;
-                return;
-            }
+                return help;
             else if (command.CommandId == Command.InvalidCommand)
-            {
-                Status = invalidCommand;
-                return;
-            }
+                return invalidCommand;
 
             atm.ExecuteCommand(command);
-            Status = atm.Result;
+            return atm.Result;
         }
     }
 }
