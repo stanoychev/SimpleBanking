@@ -150,7 +150,7 @@ namespace SimpleBanking
         Customer GetCustomer(string cookie)
         {
             var id = cookieManager.GetUserId(cookie);
-            return id > 0 ? bankDb.Customers.FirstOrDefault(x => x.Id == id) : null;
+            return id > 0 ? bankDb.Customers.FirstOrDefault(x => x.Id == id && string.Equals(x.Cookie, cookie)) : null;
         }
 
         void ReloadContext()
