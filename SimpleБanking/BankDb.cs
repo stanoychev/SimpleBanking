@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace SimpleBanking
 {
-    public interface IBankDb
+    public interface IBankDb : IDisposable
     {
         IDbSet<Transaction> Transactions { get; set; }
         IDbSet<Customer> Customers { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -18,13 +19,15 @@ namespace SimpleBanking
 
     public class DbService : IDbService
     {
-        readonly IBankDb bankDb;
+        IBankDb bankDb;
         readonly ICookieManager cookieManager;
+        readonly IKernel kernel;
 
-        public DbService(IBankDb bankDb_, ICookieManager cookieManager_)
+        public DbService(IBankDb bankDb_, ICookieManager cookieManager_, IKernel kernel_)
         {
             bankDb = bankDb_;
             cookieManager = cookieManager_;
+            kernel = kernel_;
         }
 
         public bool Deposit(string cookie, double amount)
@@ -41,6 +44,8 @@ namespace SimpleBanking
 
         public double? GetBalance(string cookie)
         {
+            ReloadContext();
+
             var customer = GetCustomer(cookie);
             if (customer == null)
                 return null;
@@ -57,6 +62,8 @@ namespace SimpleBanking
 
         public string GetFormatedHistory(string cookie)
         {
+            ReloadContext();
+
             var customer = GetCustomer(cookie);
             if (customer == null)
                 return $"User not found.";
@@ -144,6 +151,12 @@ namespace SimpleBanking
         {
             var id = cookieManager.GetUserId(cookie);
             return id > 0 ? bankDb.Customers.FirstOrDefault(x => x.Id == id) : null;
+        }
+
+        void ReloadContext()
+        {
+            bankDb.Dispose();
+            bankDb = kernel.Get<IBankDb>();
         }
 
         Customer GetCustomerByUserName(string user)
