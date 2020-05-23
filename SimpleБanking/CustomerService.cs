@@ -12,6 +12,7 @@ namespace SimpleBanking
         bool CustomerExists(string user);
         bool IsLoggedIn(string cookie);
         bool IsExpired(string cookie);
+        void UpdateExpiry(string cookie);
     }
 
     public class CustomerService : ICustomerService
@@ -80,7 +81,7 @@ namespace SimpleBanking
                 throw new ArgumentNullException("Cookie cannot be null.");
 
             var id = cookieManager.GetUserId(cookie);
-            return id > 0 ? bankDb.Customers.FirstOrDefault(x => x.Id == id) : null;
+            return id > 0 ? bankDb.Customers.FirstOrDefault(x => x.Id == id && x.Cookie == cookie) : null;
         }
 
         string HashString(string input)
@@ -106,5 +107,20 @@ namespace SimpleBanking
         }
 
         public bool IsLoggedIn(string cookie) => cookieManager.GetUserId(cookie) > 0;
+
+        public void UpdateExpiry(string cookie)
+        {
+            if (cookie == null)
+                throw new ArgumentNullException("Cookie cannot be null.");
+
+            var id = cookieManager.GetUserId(cookie);
+            if (id > 0)
+            {
+                bankDb.Customers.FirstOrDefault(x => x.Id == id && x.Cookie == cookie).ExpiresOn =
+                    DateTime.Now.AddMinutes(sessionTimeInMinutes);
+
+                bankDb.SaveChanges();
+            }
+        }
     }
 }

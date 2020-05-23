@@ -86,6 +86,8 @@ namespace SimpleBanking
 
             if (customerService.IsExpired(cookie))
                 return "Session expired";
+            else
+                customerService.UpdateExpiry(cookie);
 
             return string.Format("{0:0.00}", dbService.GetBalance(cookie) ?? 0d);
         }
@@ -97,6 +99,8 @@ namespace SimpleBanking
 
             if (customerService.IsExpired(cookie))
                 return "Session expired";
+            else
+                customerService.UpdateExpiry(cookie);
 
             var amount = double.Parse(inputParameters[ArgumentType.Amount]);
             var balance = dbService.GetBalance(cookie);
@@ -120,6 +124,8 @@ namespace SimpleBanking
 
             if (customerService.IsExpired(cookie))
                 return "Session expired";
+            else
+                customerService.UpdateExpiry(cookie);
 
             var amount = double.Parse(inputParameters[ArgumentType.Amount]);
             if (amount <= 0)
@@ -135,6 +141,8 @@ namespace SimpleBanking
 
             if (customerService.IsExpired(cookie))
                 return "Session expired";
+            else
+                customerService.UpdateExpiry(cookie);
 
             var amount = double.Parse(inputParameters[ArgumentType.Amount]);
             var recipient = inputParameters[ArgumentType.User];
@@ -166,6 +174,8 @@ namespace SimpleBanking
 
             if (customerService.IsExpired(cookie))
                 return "Session expired";
+            else
+                customerService.UpdateExpiry(cookie);
 
             return dbService.GetFormatedHistory(cookie);
         }
