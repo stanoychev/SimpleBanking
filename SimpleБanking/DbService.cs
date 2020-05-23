@@ -122,21 +122,22 @@ namespace SimpleBanking
             if (from == null && to == null)
                 throw new ArgumentNullException("Sender and reciver are null.");
 
-            var customers = new List<int>();
+            var customerIds = new List<int>();
             if (from != null)
-                customers.Add(from.Id);
+                customerIds.Add(from.Id);
 
             if (to != null)
-                customers.Add(to.Id);
+                customerIds.Add(to.Id);
 
-            bankDb.Customers.Where(x => customers.Contains(x.Id)).ToList()
-                .ForEach(customer => customer.Transactions.Add(new Transaction()
+            var customers = bankDb.Customers.Where(x => customerIds.Contains(x.Id));
+            foreach (var customer in customers)
+                customer.Transactions.Add(new Transaction()
                 {
                     Amount = amount,
                     Date = DateTime.Now,
                     Sender = from,
                     Receiver = to
-                }));
+                });
         }
 
         Customer GetCustomer(string cookie)
