@@ -8,6 +8,7 @@ namespace SimpleBanking
     {
         public static void Main()
         {
+            Console.WriteLine("This is SimpleBanking");
             var manageExceptions = true;
             var isAuto = false;
 

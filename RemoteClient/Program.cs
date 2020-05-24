@@ -8,6 +8,7 @@ namespace RemoteClient
     {
         public static void Main()
         {
+            Console.WriteLine("This is RemoteClient");
             var manageExceptions = true;
             var isAuto = false;
 
