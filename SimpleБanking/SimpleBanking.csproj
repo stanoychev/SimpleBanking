@@ -78,7 +78,6 @@
     <Compile Include="BankDb.cs" />
     <Compile Include="ATM.cs" />
     <Compile Include="CommandParser.cs" />
-    <Compile Include="BankEngine.cs" />
     <Compile Include="BankingModules.cs" />
     <Compile Include="CookieManager.cs" />
     <Compile Include="CustomerService.cs" />

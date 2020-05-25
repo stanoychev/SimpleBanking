@@ -6,16 +6,12 @@ namespace SimpleBanking
     {
         public override void Load()
         {
-            this.Bind<ICookieManager>().To<CookieManager>().InSingletonScope();
-            this.Bind<IBankDb>().To<BankDb>();
-            this.Bind<ICustomerService>().To<CustomerService>().InSingletonScope();
-            this.Bind<IDbService>().To<DbService>().InSingletonScope();
-
-            this.Bind<IATM>().To<ATM>().InSingletonScope();
-
-            this.Bind<ICommandParser>().To<CommandParser>().InSingletonScope();
-
-            this.Bind<IBankEngine>().To<BankEngine>().InSingletonScope();
+            Bind<ICookieManager>().To<CookieManager>().InSingletonScope();
+            Bind<IBankDb>().To<BankDb>();
+            Bind<ICustomerService>().To<CustomerService>().InSingletonScope();
+            Bind<IDbService>().To<DbService>().InSingletonScope();
+            Bind<ICommandParser>().To<CommandParser>().InSingletonScope();
+            Bind<IATM>().To<ATM>().InSingletonScope();
         }
     }
 }

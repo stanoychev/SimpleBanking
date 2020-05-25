@@ -1,57 +1,74 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace SimpleBanking
 {
     public interface IATM
     {
-        void ExecuteCommand(IBankCommand command);
-        string Result { get; }
+        string ExecuteCommand(string input);
     }
 
     public class ATM : IATM
     {
+        #region Messages
+        const string help =
+            "Available commands:\n" +
+            "[login] [user] [pin]\n" +
+            "[logout]\n" +
+            "[get balance]\n" +
+            "[withdraw] [amount]\n" +
+            "[deposit] [amount]\n" +
+            "[transfer] [amount] to [user]\n" +
+            "[history]\n" +
+            "[q] (to quit)";
+
+        const string invalidCommand =
+            "Invalid input.\n" +
+            "Type [h] for list of available commands or [q] to quit.";
+        #endregion
+        readonly ICommandParser commandParser;
         readonly IDbService dbService;
         readonly ICustomerService customerService;
         string name;
         string cookie;
 
-        public ATM(IDbService dbService_, ICustomerService customerService_)
+        public ATM(IDbService dbService_, ICustomerService customerService_, ICommandParser commandParser_)
         {
             dbService = dbService_;
             customerService = customerService_;
+            commandParser = commandParser_;
         }
 
-        public string Result { get; private set; }
+        public string ExecuteCommand(string input)
+        {
+            var command = commandParser.ParseCommand(input.ToLower());
 
-        public void ExecuteCommand(IBankCommand command)
+            if (command.CommandId == Command.Quit)
+                return null;
+            else if (command.CommandId == Command.Help)
+                return help;
+            else if (command.CommandId == Command.InvalidCommand)
+                return invalidCommand;
+
+            return ExecuteParsedCommand(command);
+        }
+
+        string ExecuteParsedCommand(IBankCommand command)
         {
             switch (command.CommandId)
             {
-                case Command.Login:
-                    Result = LogIn(command.InputParameters);
-                    break;
-                case Command.Logout:
-                    Result = Logout();
-                    break;
-                case Command.GetBalance:
-                    Result = GetBalance();
-                    break;
-                case Command.Withdraw:
-                    Result = Withdraw(command.InputParameters);
-                    break;
-                case Command.Deposit:
-                    Result = Deposit(command.InputParameters);
-                    break;
-                case Command.Transfer:
-                    Result = Transfer(command.InputParameters);
-                    break;
-                case Command.History:
-                    Result = GetHistory();
-                    break;
+                case Command.Login: return LogIn(command.InputParameters);
+                case Command.Logout: return Logout();
+                case Command.GetBalance: return GetBalance();
+                case Command.Withdraw: return Withdraw(command.InputParameters);
+                case Command.Deposit: return Deposit(command.InputParameters);
+                case Command.Transfer: return Transfer(command.InputParameters);
+                case Command.History: return GetHistory();
+                default: throw new ArgumentOutOfRangeException("Given command is not implemented.");
             }
         }
 
-        private string LogIn(Dictionary<ArgumentType, string> inputParameters)
+        string LogIn(Dictionary<ArgumentType, string> inputParameters)
         {
             if (customerService.IsLoggedIn(cookie) && !customerService.IsExpired(cookie))
                 return "Already logged in. Log out first";
@@ -67,7 +84,7 @@ namespace SimpleBanking
             return $"[{name}] logged in.";
         }
 
-        private string Logout()
+        string Logout()
         {
             var isLoggedIn = customerService.IsLoggedIn(cookie);
 
@@ -79,7 +96,7 @@ namespace SimpleBanking
             return "User logged out.";
         }
 
-        private string GetBalance()
+        string GetBalance()
         {
             if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";
@@ -92,7 +109,7 @@ namespace SimpleBanking
             return string.Format("{0:0.00}", dbService.GetBalance(cookie) ?? 0d);
         }
 
-        private string Withdraw(Dictionary<ArgumentType, string> inputParameters)
+        string Withdraw(Dictionary<ArgumentType, string> inputParameters)
         {
             if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";
@@ -117,7 +134,7 @@ namespace SimpleBanking
             return dbService.Withdraw(cookie, amount) ? string.Format("Withdrawn {0:0.00}", amount) : "[System error.] Witdraw failed.";
         }
 
-        private string Deposit(Dictionary<ArgumentType, string> inputParameters)
+        string Deposit(Dictionary<ArgumentType, string> inputParameters)
         {
             if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";
@@ -134,7 +151,7 @@ namespace SimpleBanking
             return dbService.Deposit(cookie, amount) ? "Deposit successful." : "[System error.] Deposit failed.";
         }
 
-        private string Transfer(Dictionary<ArgumentType, string> inputParameters)
+        string Transfer(Dictionary<ArgumentType, string> inputParameters)
         {
             if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";
@@ -167,7 +184,7 @@ namespace SimpleBanking
             return dbService.Transfter(cookie, amount, recipient) ? "Transfter successful." : "[System error.] Transfter failed.";
         }
 
-        private string GetHistory()
+        string GetHistory()
         {
             if (!customerService.IsLoggedIn(cookie))
                 return "Not logged in.";

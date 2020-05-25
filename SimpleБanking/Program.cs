@@ -33,34 +33,32 @@ namespace SimpleBanking
 
             var kernel = new StandardKernel(new BankingModules());
             kernel.Get<IDbService>().CreateDbAndSeed();
-            var bankEngine = kernel.Get<IBankEngine>();
+            var ATM = kernel.Get<IATM>();
 
             if (isAuto)
             {
                 var commands = GetAutoCommands();
 
                 while (commands.Count != 0)
-                    if (PrintAndExit(commands.Dequeue(), bankEngine))
+                    if (PrintAndExit(commands.Dequeue(), ATM))
                         break;
             }
             else
                 while (true)
-                    if (PrintAndExit(Console.ReadLine(), bankEngine))
+                    if (PrintAndExit(Console.ReadLine(), ATM))
                         return;
 
             Console.WriteLine("Bank stopped. Pres ENTER to exit.");
             Console.ReadLine();
         }
 
-        static bool PrintAndExit(string input, IBankEngine serverEngine)
+        static bool PrintAndExit(string input, IATM ATM)
         {
-            var output = serverEngine.ExecuteCommand_(input);
-            if (output == null)
-                return true;
-            else
+            var output = ATM.ExecuteCommand(input);
+            if (output != null)
                 Console.WriteLine(output);
 
-            return false;
+            return output == null;
         }
 
         static Queue<string> GetAutoCommands()

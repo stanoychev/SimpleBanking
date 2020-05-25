@@ -16,7 +16,7 @@ namespace RemoteService
 
     public class Service : IService
     {
-        readonly IBankEngine bankEngine;
+        readonly IATM ATM;
         readonly IKernel kernel;
 
         public Service()
@@ -24,10 +24,10 @@ namespace RemoteService
             kernel = new StandardKernel(new BankingModules());
             kernel.Get<IDbService>().CreateDbAndSeed();
 
-            bankEngine = kernel.Get<IBankEngine>();
+            ATM = kernel.Get<IATM>();
         }
 
-        public string ExecuteCommand(string command) => bankEngine.ExecuteCommand_(command);
+        public string ExecuteCommand(string command) => ATM.ExecuteCommand(command);
 
         public void EndSession() { }
     }
